@@ -1,0 +1,19 @@
+root:
+    ﻿books:
+        _type: strict_array
+    title:
+        _type: required_string
+    price:
+        _type: float
+    comments:
+        _type: strict_nested_array      
+
+        author:
+            _type: required_string
+        id_user:
+            _type: required_mongoid
+        hide:
+            _type: boolean
+        comment:
+            _type: string  
+        

@@ -1,0 +1,26 @@
+{
+    "name": "serkin/volan",
+    "type": "library",
+    "description": "PHP array schema validator",
+    "keywords": ["php", "validation"],
+    "homepage": "https://github.com/serkin/volan",
+	"license": "MIT",
+    "authors": [
+        {
+            "name": "Serkin Alexander",
+            "email": "serkin.alexander@gmail.com",
+            "homepage": "http://linkedin.com/in/SerkinAlexander",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "symfony/yaml": "~2.6"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Volan\\": "src/"
+        }
+    }
+}

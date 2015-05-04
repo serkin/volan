@@ -1,0 +1,16 @@
+﻿<phpunit 
+    bootstrap="vendor/autoload.php"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    colors="true"        
+    verbose="true">
+    <php>
+        <var name="fixture_path" value="tests/fixtures"/>
+    </php>
+    <testsuites>
+        <testsuite name="string">
+            <directory suffix='.php'>tests/unit/String</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
