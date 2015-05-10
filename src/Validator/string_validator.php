@@ -2,15 +2,18 @@
 
 namespace Volan\Validator;
 
-class required_string extends AbstractValidator
+class string_validator extends AbstractValidator
 {
-    
-    public function isRequired() {
-        return true;
-    }
 
-    public function isValid($arrNode, $schemaNode)
+    public function isValid($schemaNode, $arrNode)
     {
-        return false;
+
+        $returnValue = false;
+        
+        if(!empty($arrNode) && is_string($arrNode)):
+            $returnValue = true;
+        endif;
+
+        return $returnValue;
     }
 }
