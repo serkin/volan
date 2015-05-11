@@ -9,8 +9,8 @@
         <var name="fixture_path" value="tests/fixtures"/>
     </php>
     <testsuites>
-        <testsuite name="string">
-            <directory suffix='.php'>tests/unit/String</directory>
+        <testsuite name="base">
+            <directory suffix='.php'>tests/unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>
