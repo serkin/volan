@@ -7,9 +7,9 @@ use \Psr\Log\LoggerInterface;
 class Volan
 {
     /**
-     * @var string
+     * @var array
      */
-    private $error = '';
+    private $error;
 
     /**
      * @var \Psr\Log\LoggerInterface
@@ -39,9 +39,9 @@ class Volan
     const ERROR_NESTED_ELEMENT_NOT_VALID    = 7;
 
     /**
-     * @return string
+     * @return array
      */
-    public function getError()
+    public function getErrorInfo()
     {
         return $this->error;
     }
@@ -74,7 +74,7 @@ class Volan
      */
     private function setError($message, $code)
     {
-        $this->error = $code.': '.$message;
+        $this->error = ['code' => $code, 'error' => $message];
     }
 
     /**
