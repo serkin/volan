@@ -4,7 +4,7 @@
     "description": "PHP array schema validator",
     "keywords": ["php", "validation"],
     "homepage": "https://github.com/serkin/volan",
-	"license": "MIT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Serkin Alexander",
@@ -15,8 +15,11 @@
     ],
     "require": {
         "php": ">=5.5",
-        "symfony/yaml": "~2.6"
+        "psr/log": "1.0.0"
     },
+    "require-dev": {
+        "monolog/monolog": "1.13.1"
+   },
 
     "autoload": {
         "psr-4": {
