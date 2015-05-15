@@ -4,13 +4,19 @@ namespace Volan\Validator;
 
 class string_validator extends AbstractValidator
 {
-
-    public function isValid($schemaNode, $arrNode)
+    /**
+     * Validate wether given data is string.
+     *
+     * @param \Volan\CustomArrayObject $nodeSchema
+     * @param mixed                    $nodeData
+     *
+     * @return bool
+     */
+    public function isValid(\Volan\CustomArrayObject $nodeSchema, $nodeData)
     {
-
         $returnValue = false;
-        
-        if(!empty($arrNode) && is_string($arrNode)):
+
+        if (!empty($nodeData) && is_string($nodeData)):
             $returnValue = true;
         endif;
 

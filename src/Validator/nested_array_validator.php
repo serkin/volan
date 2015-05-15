@@ -2,18 +2,13 @@
 
 namespace Volan\Validator;
 
-class string_validator extends AbstractValidator
+class nested_array_validator extends array_validator
 {
-
-    public function isValid($schemaNode, $arrNode)
+    /**
+     * @return bool
+     */
+    public function isNested()
     {
-
-        $returnValue = false;
-        
-        if(!empty($arrNode) && is_string($arrNode)):
-            $returnValue = true;
-        endif;
-
-        return $returnValue;
+        return true;
     }
 }
