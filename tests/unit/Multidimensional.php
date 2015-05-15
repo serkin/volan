@@ -33,6 +33,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         require __DIR__.'/fixture/multidimensial/fixture8.php';
 
         $validator = new \Volan\Volan($schema);
+        $result = $validator->validate($arr);
 
         $this->assertFalse($result);
 
