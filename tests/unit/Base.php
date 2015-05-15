@@ -12,7 +12,7 @@ class Volan_Base extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
 
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT, $expectedErrorCode);
     }
@@ -26,7 +26,7 @@ class Volan_Base extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
 
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_VALIDATOR_CLASS_NOT_FOUND, $expectedErrorCode);
     }

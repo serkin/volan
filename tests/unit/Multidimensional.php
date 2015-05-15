@@ -23,7 +23,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
 
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_NODE_HAS_NO_FIELD_TYPE, $expectedErrorCode);
     }
@@ -37,7 +37,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
 
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_REQUIRED_FIELD_IS_EMPTY, $expectedErrorCode);
     }
@@ -50,7 +50,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_NODE_IS_NOT_VALID, $expectedErrorCode);
     }
@@ -63,7 +63,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_NODE_HAS_EXCESSIVE_KEYS, $expectedErrorCode);
     }
@@ -76,7 +76,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_NODE_HAS_EXCESSIVE_KEYS, $expectedErrorCode);
     }
@@ -89,7 +89,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
-        $expectedErrorCode = explode(':', $validator->getError())[0];
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
 
         $this->assertEquals(\Volan\Volan::ERROR_NODE_HAS_EXCESSIVE_KEYS, $expectedErrorCode);
     }
