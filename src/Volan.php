@@ -2,7 +2,7 @@
 
 namespace Volan;
 
-use Psr\Log\LoggerInterface;
+use \Psr\Log\LoggerInterface;
 
 class Volan
 {
@@ -12,7 +12,7 @@ class Volan
     private $error = '';
 
     /**
-     * @var Psr\Log\LoggerInterface
+     * @var \Psr\Log\LoggerInterface
      */
     private $logger = null;
 
