@@ -33,8 +33,6 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         require __DIR__.'/fixture/multidimensial/fixture8.php';
 
         $validator = new \Volan\Volan($schema);
-        $validator->setLogger($this->logger);
-        $result = $validator->validate($arr);
 
         $this->assertFalse($result);
 
@@ -74,7 +72,6 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         require __DIR__.'/fixture/multidimensial/fixture13.php';
 
         $validator = new \Volan\Volan($schema);
-        $validator->setLogger($this->logger);
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
@@ -88,7 +85,6 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
         require __DIR__.'/fixture/multidimensial/fixture15.php';
 
         $validator = new \Volan\Volan($schema);
-        $validator->setLogger($this->logger);
         $result = $validator->validate($arr);
 
         $this->assertFalse($result);
