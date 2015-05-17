@@ -1,5 +1,9 @@
 <?php
 
+/*
+ *  @author Serkin Akexander <serkin.alexander@gmail.com>
+ */
+        
 namespace Volan;
 
 use \Psr\Log\LoggerInterface;
@@ -87,8 +91,13 @@ class Volan
         $returnValue = true;
 
         try {
+
             if (empty($this->schema['root'])):
                 throw new \Exception('Sorry no root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
+            endif;
+            
+            if ($this->isChildElementHasStrictKeys(new CustomArrayObject($this->schema['root']), $arr)):
+                throw new \Exception("Sorry root element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
             endif;
 
             $this->validateNode('root', new CustomArrayObject($this->schema), $arr);
