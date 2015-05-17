@@ -6,22 +6,13 @@
 
 namespace Volan\Validator;
 
-class array_validator extends AbstractValidator
+class required_boolean_validator extends boolean_validator
 {
     /**
-     * @param \Volan\CustomArrayObject $nodeSchema
-     * @param mixed                    $nodeData
-     *
      * @return bool
      */
-    public function isValid(\Volan\CustomArrayObject $nodeSchema, $nodeData)
+    public function isRequired()
     {
-        $returnValue = true;
-
-        if (!is_array($nodeData)):
-            $returnValue = false;
-        endif;
-
-        return $returnValue;
+        return true;
     }
 }

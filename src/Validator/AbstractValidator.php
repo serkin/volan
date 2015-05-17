@@ -25,10 +25,10 @@ abstract class AbstractValidator
     }
 
     /**
-     * @param \Volan\CustomArrayObject $nodeSchema
-     * @param mixed                    $nodeData
+     * 
+     * @param mixed $nodeData
      *
      * @return bool
      */
-    abstract public function isValid(\Volan\CustomArrayObject $nodeSchema, $nodeData);
+    abstract public function isValid($nodeData);
 }

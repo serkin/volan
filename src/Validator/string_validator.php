@@ -11,19 +11,13 @@ class string_validator extends AbstractValidator
     /**
      * Validate wether given data is string.
      *
-     * @param \Volan\CustomArrayObject $nodeSchema
-     * @param mixed                    $nodeData
+     * @param mixed $nodeData
      *
      * @return bool
      */
-    public function isValid(\Volan\CustomArrayObject $nodeSchema, $nodeData)
+    public function isValid($nodeData)
     {
-        $returnValue = false;
 
-        if (!empty($nodeData) && is_string($nodeData)):
-            $returnValue = true;
-        endif;
-
-        return $returnValue;
+        return (!empty($nodeData) && is_string($nodeData));
     }
 }

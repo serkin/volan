@@ -142,7 +142,7 @@ class Volan
 
             $this->validatingExcessiveKeys($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
 
-            $this->validateField($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
+            $this->validateField($validator, $nodeData);
 
             $this->validateNestedField($validator, $nodeData);
 
@@ -255,14 +255,13 @@ class Volan
 
     /**
      * @param \Volan\Validator\AbstractValidator $validator
-     * @param \Volan\CustomArrayObject           $schema
      * @param mixed                              $nodeData
      *
      * @throws \Exception
      */
-    private function validateField(\Volan\Validator\AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
+    private function validateField(\Volan\Validator\AbstractValidator $validator, $nodeData = null)
     {
-        if ($validator->isValid($schema, $nodeData) === false):
+        if ($validator->isValid($nodeData) === false):
             throw new \Exception("Sorry {$this->currentNode} element has invalid associated data", self::ERROR_NODE_IS_NOT_VALID);
         endif;
     }
