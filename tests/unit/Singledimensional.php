@@ -1,12 +1,22 @@
 <?php
 
+use \Monolog\Logger;
+use \Monolog\Handler\StreamHandler;
 
 class Volan_Singledimensional extends PHPUnit_Framework_TestCase
 {
-    
+    public $logger;
+        
+    public function setUp()
+    {
+        $filename = __DIR__. '/log.txt';
+        @unlink($filename);
+        $this->logger = new Logger('name');
+        $this->logger->pushHandler(new StreamHandler($filename));
+    }
     public function testErrorOnMissingTypeField()
     {
-        require __DIR__.'/fixture/singledimensional/fixture3.php';
+        require __DIR__.'/fixture/fixture3.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -20,7 +30,7 @@ class Volan_Singledimensional extends PHPUnit_Framework_TestCase
     
     public function testErrorOnMissingRequiredField()
     {
-        require __DIR__.'/fixture/singledimensional/fixture4.php';
+        require __DIR__.'/fixture/fixture4.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -34,7 +44,7 @@ class Volan_Singledimensional extends PHPUnit_Framework_TestCase
 
     public function testErrorOnInvalidNode()
     {
-        require __DIR__.'/fixture/singledimensional/fixture5.php';
+        require __DIR__.'/fixture/fixture5.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -45,9 +55,21 @@ class Volan_Singledimensional extends PHPUnit_Framework_TestCase
         $this->assertEquals(\Volan\Volan::ERROR_NODE_IS_NOT_VALID, $expectedErrorCode);
     }
     
+    public function testErrorOnExtraKyes()
+    {
+        require __DIR__.'/fixture/fixture7.php';
+
+        $validator = new \Volan\Volan($schema);
+        $result = $validator->validate($arr);
+
+        $this->assertFalse($result);
+        $expectedErrorCode = $validator->getErrorInfo()['code'];
+
+        $this->assertEquals(\Volan\Volan::ERROR_NODE_HAS_EXCESSIVE_KEYS, $expectedErrorCode);
+    }
     public function testSuccessValidation()
     {
-        require __DIR__.'/fixture/singledimensional/fixture6.php';
+        require __DIR__.'/fixture/fixture6.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
