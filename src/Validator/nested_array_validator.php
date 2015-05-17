@@ -1,5 +1,9 @@
 <?php
 
+/*
+ *  @author Serkin Akexander <serkin.alexander@gmail.com>
+ */
+
 namespace Volan\Validator;
 
 class nested_array_validator extends array_validator

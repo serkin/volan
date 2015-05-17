@@ -1,5 +1,9 @@
 <?php
 
+/*
+ *  @author Serkin Akexander <serkin.alexander@gmail.com>
+ */
+
 namespace Volan\Validator;
 
 class array_validator extends AbstractValidator
