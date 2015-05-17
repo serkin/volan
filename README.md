@@ -106,7 +106,7 @@ var_dump($validator->getErrorInfo());
 If you need extra validators you can create them extending `\Volan\Validator\AbstractValidator` class
 * Create folder `src/Volan/Validator` in your library
 * Add your custom validator `src/Volan/Validator/mongoid_validator.php`. Example for `mongoid` validator:
-* ```php
+```php
 namespace Volan\Validator;
 class mongoid_validator extends AbstractValidator
 {
