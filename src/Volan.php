@@ -20,7 +20,17 @@ class Volan
      */
     private $logger = null;
 
+    
     /**
+     * If set to false all required fields set can be empty
+     *
+     * @var bool
+     */
+    private $requiredMode = true;
+
+    /**
+     * If set to false we not check wether field is required or not. Default is true
+     * 
      * @var bool
      */
     private $strictMode;
@@ -58,6 +68,16 @@ class Volan
     {
         $this->schema       = $schema;
         $this->strictMode   = $strictMode;
+    }
+    
+    /**
+     * Sets required mode
+     * 
+     * @param bool $mode
+     */
+    public function setRequiredMode($mode = true)
+    {
+        $this->requiredMode = $mode;
     }
 
     public function setLogger(LoggerInterface $logger)
@@ -134,8 +154,10 @@ class Volan
             $validator = $this->getValidatorClass($nodeSchema[$key]);
 
             $this->validateRequiredField($validator, $nodeData);
+            
+            $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 
-            if ($validator->isRequired() === false  && empty($nodeData)):
+            if ($isRequired === false && empty($nodeData)):
                 $this->log("Element: {$this->currentNode} has empty nonrequired data. We skip other check");
                 continue;
             endif;
@@ -226,7 +248,10 @@ class Volan
      */
     private function validateRequiredField(\Volan\Validator\AbstractValidator $validator, $nodeData = null)
     {
-        if ($validator->isRequired() && empty($nodeData)):
+
+        $isRequired = $this->requiredMode ? $validator->isRequired() : false;
+
+        if ($isRequired && empty($nodeData)):
             throw new \Exception("Sorry {$this->currentNode} element has flag *required*", self::ERROR_REQUIRED_FIELD_IS_EMPTY);
         endif;
 
