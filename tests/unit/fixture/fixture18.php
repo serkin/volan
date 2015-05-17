@@ -2,26 +2,22 @@
 
 /**
  * Fixture for
- *  - Multidimensional::testErrorOnMissingTypeField
+ *  - Driver:::Number::testErrorOnValidation
  */
 
 $schema = [
     'root' => [
         'name' => [
             '_type' => 'required_array',
-            'en' => [
-                'type' => 'required_string' // Missing _type
-                ],
-            'ru' => [
-                '_type' => 'required_string'
-                ],
+            'sort' => [
+                '_type' => 'number'
+                ]
             ]
         ]
     ];
 
 $arr = [
     'name' => [
-        'en' => 'Serkin Alexander',
-        'ru' => 'Серкин Александр'
+        'sort' => 'Serkin Alexander' // Should be number type
     ]
 ];

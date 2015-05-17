@@ -2,26 +2,22 @@
 
 /**
  * Fixture for
- *  - Multidimensional::testErrorOnMissingTypeField
+ *  - Driver:::Boolean::testErrorOnValidation
  */
 
 $schema = [
     'root' => [
         'name' => [
             '_type' => 'required_array',
-            'en' => [
-                'type' => 'required_string' // Missing _type
-                ],
-            'ru' => [
-                '_type' => 'required_string'
-                ],
+            'sold' => [
+                '_type' => 'boolean'
+                ]
             ]
         ]
     ];
 
 $arr = [
     'name' => [
-        'en' => 'Serkin Alexander',
-        'ru' => 'Серкин Александр'
+        'sold' => 'yes' // Should be boolean type
     ]
 ];
