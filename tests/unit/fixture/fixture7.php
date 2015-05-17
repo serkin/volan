@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fixture for Singledimensional::testSuccessValidation
+ * Fixture for Singledimensional::testErrorOnExtraKyes
  */
 
 $schema = [
@@ -13,5 +13,6 @@ $schema = [
     ];
 
 $arr = [
-    'name' => 'Serkin'
+    'name' => 'Serkin',
+    'exta' => 'Extra'
 ];

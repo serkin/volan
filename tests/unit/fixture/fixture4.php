@@ -13,5 +13,5 @@ $schema = [
     ];
 
 $arr = [
-    'noname' => 'What is -noname- key doing here?'  // Expecting 'name' here
+     // Expecting 'name' here
 ];
