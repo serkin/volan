@@ -132,11 +132,27 @@ $validator = new \Volan\Volan($schema, $strictMode = false);
 ```
 
 In mongoDB when you update just several fields in collection you cannot pass validation cause required fields may be missing.
-You can tell validator consider all required validation as unrequired. Example:
+You can tell validator consider all required validation as optional. Example:
 ```php
 $validator = new \Volan\Volan($schema);
 $validator->setRequiredMode(false);
+
+$result = $validator->validate($book);
 ```
+
+If you want see validation process set logger
+```
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+$log = new Logger('name');
+$log->pushHandler(new StreamHandler('path/to/your.log'));
+
+$validator = new \Volan\Volan($schema);
+$validator->setLogger($log);
+
+$result = $validator->validate($book);
+``` 
 ## Dependencies
 * PHP: >= 5.5
 
