@@ -1,4 +1,4 @@
-# PHP array schema validator
+# Light PHP validation library
 Validates arrays against given schema.
 
 [![Build Status](https://img.shields.io/travis/serkin/volan.svg?style=flat-square)](https://travis-ci.org/serkin/parser)
@@ -8,6 +8,18 @@ Validates arrays against given schema.
 [![Total Downloads](https://poser.pugx.org/serkin/volan/downloads)](https://packagist.org/packages/serkin/volan)
 [![Latest Unstable Version](https://poser.pugx.org/serkin/volan/v/unstable)](https://packagist.org/packages/serkin/volan)
 [![License](https://poser.pugx.org/serkin/volan/license)](https://packagist.org/packages/serkin/volan)
+
+- [Volan](#light-php-validation-library)
+	- [Installation](#installation)
+	- [Usage](#usage)
+	- [Predefined validatorse](#predefined-validators)
+	- [Custom validators](#custom-validators)
+	- [Usage with other validators](#usage-with-other-validators)
+	- [Tips](#tips)
+	- [Dependencies](#dependencies)
+	- [Contribution](#contribution)
+	- [Licence](#licence)
+	- [Tests](#tests)
 
 ## Installation
 ---
@@ -20,7 +32,6 @@ composer require serkin/volan ~1.1
 ## Usage
 ---
 All you have to do is to specify `_type` field for each node. `_type` is a reference to a validation class
-### Basic usage
 
 ```php
 include 'vendor/autoload.php';
@@ -84,26 +95,26 @@ $result = $validator->validate($book);
 // if $result === false you can get full information about invalid node
 var_dump($validator->getErrorInfo());
 ```
-### Predefined validators
-#### Strings
+## Predefined validators
+### Strings
 * `string`: string
 * `required_string`: string that has to be present
 
-#### Arrays
+### Arrays
 * `array`: array
 * `required_array`: array that has to be present
 * `nested_array`: array with nested arrays
 * `required_nested_array`: array with nested arrays has to be present
 
-#### Bool
+### Bool
 * `boolean`: boolean
 * `required_boolean`: boolean that has to be present
 
-#### Numbers
+### Numbers
 * `number`: int or float
 * `required_number`: int or float that has to be present
 
-### Custom validators
+## Custom validators
 If you need extra validators you can create them extending `\Volan\Validator\AbstractValidator` class
 * Create folder `src/Volan/Validator` in your library
 * Add your custom validator `src/Volan/Validator/mongoid_validator.php`. Example for `mongoid` validator:
@@ -125,7 +136,7 @@ class mongoid_validator extends AbstractValidator
     }
 ```
 
-### Usage with other validators
+## Usage with other validators
 If you want to use other validation libraries with `Volan` it is easy. Let's take a look how it works with [Respect validation engine](https://github.com/Respect/Validation) 
 ``` php
 namespace Volan\Validator;
