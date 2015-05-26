@@ -14,7 +14,7 @@ Validates arrays against given schema.
 	- [Usage](#usage)
 	- [Predefined validatorse](#predefined-validators)
 	- [Custom validators](#custom-validators)
-	- [Usage with other validators](#usage-with-other-validators)
+	- [Usage with other libraries](#usage-with-other-libraries)
 	- [Tips](#tips)
 	- [Dependencies](#dependencies)
 	- [Contribution](#contribution)
@@ -136,7 +136,7 @@ class mongoid_validator extends AbstractValidator
     }
 ```
 
-## Usage with other validators
+## Usage with other libraries
 If you want to use other validation libraries with `Volan` it is easy. Let's take a look how it works with [Respect validation engine](https://github.com/Respect/Validation) 
 ``` php
 namespace Volan\Validator;
