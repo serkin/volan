@@ -13,12 +13,13 @@ Validates arrays against given schema.
 ---
 via Composer:
 
-```
+``` bash
 composer require serkin/volan ~1.1
 ```
 
 ## Usage
 ---
+All you have to do is to specify `_type` field for each node. `_type` is a reference to a validation class
 ### Basic usage
 
 ```php
@@ -83,7 +84,7 @@ $result = $validator->validate($book);
 // if $result === false you can get full information about invalid node
 var_dump($validator->getErrorInfo());
 ```
-### Predifined validators
+### Predefined validators
 #### Strings
 * `string`: string
 * `required_string`: string that has to be present
@@ -106,7 +107,7 @@ var_dump($validator->getErrorInfo());
 If you need extra validators you can create them extending `\Volan\Validator\AbstractValidator` class
 * Create folder `src/Volan/Validator` in your library
 * Add your custom validator `src/Volan/Validator/mongoid_validator.php`. Example for `mongoid` validator:
-```php
+``` php
 namespace Volan\Validator;
 class mongoid_validator extends AbstractValidator
 {
@@ -116,7 +117,7 @@ class mongoid_validator extends AbstractValidator
     }
 ```
 * Add autoload to composer.json
-```json
+``` json
 "autoload": {
         "psr-4": {
             "Volan\\Validator\\": "src/Volan/Validator/"
@@ -124,24 +125,38 @@ class mongoid_validator extends AbstractValidator
     }
 ```
 
+### Usage with other validators
+If you want to use other validation libraries with `Volan` it is easy. Let's take a look how it works with [Respect validation engine](https://github.com/Respect/Validation) 
+``` php
+namespace Volan\Validator;
+use Respect\Validation\Validator as v;
+
+class int_between_10_and_20 extends AbstractValidator
+{
+    public function isValid($nodeData)
+    {
+        return v::int()->between(10, 20)->validate($nodeData);
+        
+    }
+```
 
 ## Tips
 If you want allow extra keys in array you can define it in constructor
-```php
+``` php
 $validator = new \Volan\Volan($schema, $strictMode = false);
 ```
 
 In mongoDB when you update just several fields in collection you cannot pass validation cause required fields may be missing.
-You can tell validator consider all required validation as optional. Example:
-```php
+You can tell validator consider all required validation as optional.
+
+``` php
 $validator = new \Volan\Volan($schema);
 $validator->setRequiredMode(false);
-
 $result = $validator->validate($book);
 ```
 
 If you want see validation process set logger
-```
+``` php
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -157,12 +172,12 @@ $result = $validator->validate($book);
 * PHP: >= 5.5
 
 ## Contribution
-* Send a pull request
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Licence
-* MIT
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 ## Tests
-```
+``` bash
 phpunit
 ```
