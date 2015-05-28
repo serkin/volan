@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class number_validator extends AbstractValidator
+class numberValidator extends AbstractValidator
 {
     /**
      * @param mixed $nodeData

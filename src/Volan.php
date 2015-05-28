@@ -267,15 +267,53 @@ class Volan
      */
     private function getValidatorClass($node)
     {
-        $nodeTypeClassString = '\Volan\Validator\\'.$node['_type'].'_validator';
 
-        if (!class_exists($nodeTypeClassString)):
-            throw new \Exception("Sorry validator class {$nodeTypeClassString} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
+        $classStringName = $node['_type'].'_validator';
+        $classStringNamespace = '\Volan\Validator\\';
+
+        $classNames = [];
+        $classNames[] = $classStringNamespace . $classStringName;
+        $classNames[] = $classStringNamespace . $this->getPSRCompatibleClassName($classStringName);
+
+        $validatorClass = null;
+
+        foreach ($classNames as $className):
+            if(class_exists($className)):
+                $validatorClass = new $className();
+                $this->log("validatot class $className exists");
+            endif;
+        endforeach;
+
+
+        if (is_null($validatorClass)):
+            throw new \Exception("Sorry validator class {$classNames[0]}/{$classNames[1]} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
         endif;
 
-        $this->log("validatot class $nodeTypeClassString exists");
+        return $validatorClass;
 
-        return new $nodeTypeClassString();
+    }
+    
+    /*
+     * Converts string constisting _ to PSR compatible class name
+     * 
+     * @param string
+     * 
+     * @return string
+     */
+    private function getPSRCompatibleClassName($string)
+    {
+        $className = '';
+        $arr = explode('_', $string);
+
+        foreach ($arr as $key => $value):
+            if($key == 0):
+                $className .= strtolower($value);
+            else:
+                $className .= ucfirst(strtolower($value));
+            endif;
+        endforeach;
+        
+        return $className;
     }
 
     /**

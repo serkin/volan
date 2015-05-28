@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class required_number_validator extends number_validator
+class requiredNumberValidator extends numberValidator
 {
     /**
      * @return bool
