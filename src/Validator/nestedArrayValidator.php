@@ -6,12 +6,12 @@
 
 namespace Volan\Validator;
 
-class required_boolean_validator extends boolean_validator
+class nestedArrayValidator extends arrayValidator
 {
     /**
      * @return bool
      */
-    public function isRequired()
+    public function isNested()
     {
         return true;
     }

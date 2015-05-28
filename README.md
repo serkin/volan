@@ -179,6 +179,20 @@ $validator->setLogger($log);
 
 $result = $validator->validate($book);
 ``` 
+You can use PSR compatible names for validation classes.
+Previous example with `mongoid` validation class can be rewritten like:
+``` php
+namespace Volan\Validator;
+class mongoidValidator extends AbstractValidator
+{
+    public function isValid($nodeData)
+    {
+        return ($nodeData instanceof \MongoId);
+    }
+```
+Here we changed `mongoid_validator` to `mongoidValidator`.
+Example with `int_between_10_and_20` be rewritten to `intBetween10And20`
+
 ## Dependencies
 * PHP: >= 5.5
 
