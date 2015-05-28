@@ -5,7 +5,7 @@ class Volan_Base extends PHPUnit_Framework_TestCase
 {
     public function testErrorOnMissingRootNode()
     {
-        require __DIR__.'/fixture/fixture1.php';
+        require dirname(__DIR__).'/fixture/fixture1.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -19,7 +19,7 @@ class Volan_Base extends PHPUnit_Framework_TestCase
 
     public function testErrorOnMissingValidatorClaa()
     {
-        require __DIR__.'/fixture/fixture2.php';
+        require dirname(__DIR__).'/fixture/fixture2.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
