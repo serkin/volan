@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class booleanValidator extends AbstractValidator
+class NumberValidator extends AbstractValidator
 {
     /**
      * @param mixed $nodeData
@@ -15,7 +15,6 @@ class booleanValidator extends AbstractValidator
      */
     public function isValid($nodeData)
     {
-
-        return is_bool($nodeData);
+        return is_numeric($nodeData);
     }
 }

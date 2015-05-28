@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class requiredStringValidator extends stringValidator
+class RequiredStringValidator extends StringValidator
 {
     /**
      * @return bool
