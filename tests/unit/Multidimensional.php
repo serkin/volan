@@ -9,7 +9,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        $filename = __DIR__. '/log.txt';
+        $filename = dirname(__DIR__). '/log.txt';
         @unlink($filename);
         $this->logger = new Logger('name');
         $this->logger->pushHandler(new StreamHandler($filename));
@@ -17,7 +17,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testErrorOnMissingTypeField()
     {
-        require __DIR__.'/fixture/fixture17.php';
+        require dirname(__DIR__).'/fixture/fixture17.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -31,7 +31,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testErrorOnMissingRequiredField()
     {
-        require __DIR__.'/fixture/fixture8.php';
+        require dirname(__DIR__).'/fixture/fixture8.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -45,7 +45,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testErrorOnInvalidNode()
     {
-        require __DIR__.'/fixture/fixture9.php';
+        require dirname(__DIR__).'/fixture/fixture9.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -58,7 +58,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
     
     public function testErrorOnExcessiveKeys()
     {
-        require __DIR__.'/fixture/fixture11.php';
+        require dirname(__DIR__).'/fixture/fixture11.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -71,7 +71,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testErrorOnExcessiveKeysInNestedArray()
     {
-        require __DIR__.'/fixture/fixture13.php';
+        require dirname(__DIR__).'/fixture/fixture13.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -84,7 +84,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
     
     public function testErrorOnExcessiveKeysInNestedArrayWithTwoArrays()
     {
-        require __DIR__.'/fixture/fixture15.php';
+        require dirname(__DIR__).'/fixture/fixture15.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -97,7 +97,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
     
     public function testSuccessValidationInNestedArrayWithTwoArrays()
     {
-        require __DIR__.'/fixture/fixture14.php';
+        require dirname(__DIR__).'/fixture/fixture14.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -107,7 +107,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
     
     public function testSuccessValidationInNestedArray()
     {
-        require __DIR__.'/fixture/fixture12.php';
+        require dirname(__DIR__).'/fixture/fixture12.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -117,7 +117,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testSuccessValidationInNestedArrayWithEmptySubArray()
     {
-        require __DIR__.'/fixture/fixture16.php';
+        require dirname(__DIR__).'/fixture/fixture16.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);
@@ -127,7 +127,7 @@ class Volan_Multidimensional extends PHPUnit_Framework_TestCase
 
     public function testSuccessValidation()
     {
-        require __DIR__.'/fixture/fixture10.php';
+        require dirname(__DIR__).'/fixture/fixture10.php';
 
         $validator = new \Volan\Volan($schema);
         $result = $validator->validate($arr);

@@ -6,18 +6,15 @@
 
 namespace Volan\Validator;
 
-class stringValidator extends AbstractValidator
+class ArrayValidator extends AbstractValidator
 {
     /**
-     * Validate wether given data is string.
-     *
      * @param mixed $nodeData
      *
      * @return bool
      */
     public function isValid($nodeData)
     {
-
-        return (!empty($nodeData) && is_string($nodeData));
+        return is_array($nodeData);
     }
 }

@@ -151,7 +151,7 @@ class Volan
 
             $this->validatingTypeField($nodeSchema[$key]);
 
-            $validator = $this->getValidatorClass($nodeSchema[$key]);
+            $validator = $this->getClassValidator($nodeSchema[$key]);
 
             $this->validateRequiredField($validator, $nodeData);
             
@@ -265,7 +265,7 @@ class Volan
      *
      * @throws \Exception
      */
-    private function getValidatorClass($node)
+    private function getClassValidator($node)
     {
 
         $classStringName = $node['_type'].'_validator';
@@ -306,11 +306,7 @@ class Volan
         $arr = explode('_', $string);
 
         foreach ($arr as $key => $value):
-            if($key == 0):
-                $className .= strtolower($value);
-            else:
-                $className .= ucfirst(strtolower($value));
-            endif;
+            $className .= ucfirst(strtolower($value));
         endforeach;
         
         return $className;

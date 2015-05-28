@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class requiredArrayValidator extends arrayValidator
+class RequiredArrayValidator extends ArrayValidator
 {
     /**
      * @return bool
