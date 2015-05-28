@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class string_validator extends AbstractValidator
+class stringValidator extends AbstractValidator
 {
     /**
      * Validate wether given data is string.
