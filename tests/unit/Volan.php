@@ -114,6 +114,48 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals('comments.userid', $validator->getErrorInfo()['node']);
     }
     
+    public function testErrorInNestedNode()
+    {
+        require $this->fixtureFileName;
+
+        $arr['comments'] = ['comment' => 'comment']; // Let's corrupt data. Comments has to be nested
+
+        $validator = new v($schema);
+        $result = $validator->validate($arr);
+
+        $this->assertFalse($result);
+        $this->assertEquals(v::ERROR_NESTED_ELEMENT_NOT_VALID, $validator->getErrorInfo()['code']);
+        $this->assertEquals('root.comments', $validator->getErrorInfo()['node']);
+    }
+
+    public function testErrorOnMissingRequiredField()
+    {
+        require $this->fixtureFileName;
+
+        unset($arr['title']); // Let's corrupt data. Title is REQUIRED
+
+        $validator = new v($schema);
+        $result = $validator->validate($arr);
+
+        $this->assertFalse($result);
+        $this->assertEquals(v::ERROR_REQUIRED_FIELD_IS_EMPTY, $validator->getErrorInfo()['code']);
+        $this->assertEquals('root.title', $validator->getErrorInfo()['node']);
+    }
+    
+    public function testErrorOnMissingRequiredFieldInDepth()
+    {
+        require $this->fixtureFileName;
+
+        unset($arr['comments'][0]['comment']); // Let's corrupt data. Title is REQUIRED
+
+        $validator = new v($schema);
+        $result = $validator->validate($arr);
+
+        $this->assertFalse($result);
+        $this->assertEquals(v::ERROR_REQUIRED_FIELD_IS_EMPTY, $validator->getErrorInfo()['code']);
+        $this->assertEquals('comments.comment', $validator->getErrorInfo()['node']);
+    }
+
     public function testErrorOnExtraKeys()
     {
         require $this->fixtureFileName;
