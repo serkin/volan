@@ -220,20 +220,34 @@ class Volan
      * @param \Volan\CustomArrayObject           $schema
      * @param mixed                              $nodeData
      *
-     * @throws \Exception
      */
     private function validatingExcessiveKeys(\Volan\Validator\AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
     {
-        if ($this->strictMode && !$validator->isNested() && $this->isChildElementHasStrictKeys($schema, $nodeData)):
-            throw new \Exception("{$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
+        if($this->strictMode === false):
+            return;
         endif;
 
-        if ($this->strictMode && $validator->isNested()):
+        if (!$validator->isNested()):
+            $this->validatingChildExcessiveKeys($schema, $nodeData);
+        endif;
+
+        if ($validator->isNested()):
             foreach ($nodeData as $record):
-                if ($this->isChildElementHasStrictKeys($schema, $record)):
-                    throw new \Exception("Children of element: {$this->currentNode} has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
-                endif;
+                $this->validatingChildExcessiveKeys($schema, $record);
             endforeach;
+        endif;
+    }
+    
+    /**
+     * @param \Volan\CustomArrayObject           $schema
+     * @param mixed                              $nodeData
+     *
+     * @throws \Exception
+     */
+    private function validatingChildExcessiveKeys($schema, $nodeData)
+    {
+        if($this->isChildElementHasStrictKeys($schema, $nodeData)):
+            throw new \Exception("{$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
         endif;
     }
 
