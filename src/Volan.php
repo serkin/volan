@@ -179,7 +179,7 @@ class Volan
             
             $this->validateField($validator, $nodeData);            
 
-            if ($validator->isNested()):
+            if ($validator->isNested()) {
 
                 $this->getLogger()->info("Element: {$this->currentNode} is has children");
 
@@ -187,9 +187,9 @@ class Volan
                     $this->validateNode($key, $nodeSchema, $record);
                 endforeach;
 
-            else:
+            } else {
                 $this->validateNode($key, $nodeSchema, $nodeData);
-            endif;
+            }
 
             $this->getLogger()->info("Element: {$this->currentNode} finished checking successfully.");
 
@@ -223,7 +223,7 @@ class Volan
      */
     private function validatingExcessiveKeys(\Volan\Validator\AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
     {
-        if($this->strictMode === false):
+        if ($this->strictMode === false):
             return;
         endif;
 
@@ -246,7 +246,7 @@ class Volan
      */
     private function validatingChildExcessiveKeys($schema, $nodeData)
     {
-        if($this->isChildElementHasStrictKeys($schema, $nodeData)):
+        if ($this->isChildElementHasStrictKeys($schema, $nodeData)):
             throw new \Exception("{$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
         endif;
     }
@@ -297,13 +297,13 @@ class Volan
         $classStringNamespace = '\Volan\Validator\\';
 
         $classNames = [];
-        $classNames[] = $classStringNamespace . $classStringName;
-        $classNames[] = $classStringNamespace . $this->getPSRCompatibleClassName($classStringName);
+        $classNames[] = $classStringNamespace.$classStringName;
+        $classNames[] = $classStringNamespace.$this->getPSRCompatibleClassName($classStringName);
 
         $validatorClass = null;
 
         foreach ($classNames as $className):
-            if(class_exists($className)):
+            if (class_exists($className)):
                 $validatorClass = new $className();
                 $this->getLogger()->info("Class validator $className exists");
             endif;
