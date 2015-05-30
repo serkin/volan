@@ -12,7 +12,9 @@ $schema = [
         'price' => [
             '_type' => 'number'
             ],
-        //'tags' => ['_type' => 'array'],
+        'tags' => [
+            '_type' => 'array'
+            ],
         'instock' => [
             '_type' => 'required_boolean'
             ],
@@ -47,7 +49,7 @@ $arr = [
     'reserved'  => false,
     'price'     => 60,
     'protagonist' => ['name' => 'Lev Nikolayevich Myshkin'],
-    //'tags'      => ['novel', 'Fyodor Dostoyevsky'],
+    'tags'      => ['novel', 'Fyodor Dostoyevsky'],
     'comments'  => [
         [
             'comment'   => 'Good book',
