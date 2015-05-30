@@ -175,9 +175,9 @@ class Volan
 
             $this->validatingExcessiveKeys($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
 
-            $this->validateField($validator, $nodeData);
-
-            $this->validateNestedField($validator, $nodeData);
+            $this->validateNesting($validator, $nodeData);
+            
+            $this->validateField($validator, $nodeData);            
 
             if ($validator->isNested()):
 
@@ -356,9 +356,9 @@ class Volan
      *
      * @throws \Exception
      */
-    private function validateNestedField(\Volan\Validator\AbstractValidator $validator, $nodeData)
+    private function validateNesting(\Volan\Validator\AbstractValidator $validator, $nodeData)
     {
-        if ($validator->isNested() && !is_array($nodeData[0])):
+        if ($validator->isNested() && (!isset($nodeData[0]) || !is_array($nodeData[0]))):
             throw new \Exception("{$this->currentNode} element supposed to be nested but it is not", self::ERROR_NESTED_ELEMENT_NOT_VALID);
         endif;
     }
