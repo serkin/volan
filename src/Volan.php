@@ -6,7 +6,7 @@
         
 namespace Volan;
 
-use \Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 class Volan
 {
@@ -18,7 +18,7 @@ class Volan
     /**
      * @var \Psr\Log\LoggerInterface
      */
-    private $logger = null;
+    private $logger;
 
     
     /**
@@ -68,6 +68,9 @@ class Volan
     {
         $this->schema       = $schema;
         $this->strictMode   = $strictMode;
+
+        $log = new DummyLogger('volan');
+        $this->setLogger($log);
     }
     
     /**
@@ -85,11 +88,14 @@ class Volan
         $this->logger = $logger;
     }
 
-    private function log($message)
+    /**
+     * Gets current logger
+     * 
+     * @return \Psr\Log\LoggerInterface
+     */
+    private function getLogger()
     {
-        if (!is_null($this->logger)):
-            $this->logger->info($message);
-        endif;
+        return $this->logger;
     }
 
     /**
@@ -118,17 +124,17 @@ class Volan
         try {
 
             if (empty($this->schema['root'])):
-                throw new \Exception('Sorry no root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
+                throw new \Exception('No root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
             endif;
             
             if ($this->strictMode && $this->isChildElementHasStrictKeys(new CustomArrayObject($this->schema['root']), $arr)):
-                throw new \Exception("Sorry root element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
+                throw new \Exception("root element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
             endif;
 
             $this->validateNode('root', new CustomArrayObject($this->schema), $arr);
         } catch (\Exception $exc) {
             $this->setError($exc->getMessage(), $exc->getCode());
-            $this->log($exc->getMessage());
+            $this->getLogger()->warning($exc->getMessage());
 
             $returnValue = false;
         }
@@ -150,7 +156,7 @@ class Volan
         foreach ($nodeSchema->getArrayKeys() as $key):
 
             $this->currentNode = $node.'.'.$key;
-            $this->log("We in element: {$this->currentNode}");
+            $this->getLogger()->info("We are in element: {$this->currentNode}");
 
             $nodeData = isset($element[$key]) ? $element[$key] : null;
 
@@ -163,7 +169,7 @@ class Volan
             $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 
             if ($isRequired === false && empty($nodeData)):
-                $this->log("Element: {$this->currentNode} has empty nonrequired data. We skip other check");
+                $this->getLogger()->info("Element: {$this->currentNode} has empty nonrequired data. We skip other check");
                 continue;
             endif;
 
@@ -175,7 +181,7 @@ class Volan
 
             if ($validator->isNested()):
 
-                $this->log("Element: {$this->currentNode} is has children");
+                $this->getLogger()->info("Element: {$this->currentNode} is has children");
 
                 foreach ($nodeData as $record):
                     $this->validateNode($key, $nodeSchema, $record);
@@ -185,7 +191,7 @@ class Volan
                 $this->validateNode($key, $nodeSchema, $nodeData);
             endif;
 
-            $this->log("Element: {$this->currentNode} finished checking successfully.");
+            $this->getLogger()->info("Element: {$this->currentNode} finished checking successfully.");
 
         endforeach;
     }
@@ -219,13 +225,13 @@ class Volan
     private function validatingExcessiveKeys(\Volan\Validator\AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
     {
         if ($this->strictMode && !$validator->isNested() && $this->isChildElementHasStrictKeys($schema, $nodeData)):
-            throw new \Exception("Sorry {$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
+            throw new \Exception("{$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
         endif;
 
         if ($this->strictMode && $validator->isNested()):
             foreach ($nodeData as $record):
                 if ($this->isChildElementHasStrictKeys($schema, $record)):
-                    throw new \Exception("Sorry children of element: {$this->currentNode} has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
+                    throw new \Exception("Children of element: {$this->currentNode} has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
                 endif;
             endforeach;
         endif;
@@ -239,10 +245,10 @@ class Volan
     private function validatingTypeField($node)
     {
         if (empty($node['_type'])):
-            throw new \Exception("Sorry element: {$this->currentNode} has no compulsory field: _type", self::ERROR_NODE_HAS_NO_FIELD_TYPE);
+            throw new \Exception("Element: {$this->currentNode} has no compulsory field: _type", self::ERROR_NODE_HAS_NO_FIELD_TYPE);
         endif;
 
-        $this->log("Element: {$this->currentNode} has field: _type");
+        $this->getLogger()->info("Element: {$this->currentNode} has field: _type");
     }
 
     /**
@@ -257,10 +263,10 @@ class Volan
         $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 
         if ($isRequired && empty($nodeData)):
-            throw new \Exception("Sorry {$this->currentNode} element has flag *required*", self::ERROR_REQUIRED_FIELD_IS_EMPTY);
+            throw new \Exception("{$this->currentNode} element has flag *required*", self::ERROR_REQUIRED_FIELD_IS_EMPTY);
         endif;
 
-        $this->log('*required* check passed');
+        $this->getLogger()->info('*required* check passed');
     }
 
     /**
@@ -285,13 +291,13 @@ class Volan
         foreach ($classNames as $className):
             if(class_exists($className)):
                 $validatorClass = new $className();
-                $this->log("validatot class $className exists");
+                $this->getLogger()->info("Class validator $className exists");
             endif;
         endforeach;
 
 
         if (is_null($validatorClass)):
-            throw new \Exception("Sorry validator class {$classNames[0]}/{$classNames[1]} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
+            throw new \Exception("Class validator {$classNames[0]}/{$classNames[1]} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
         endif;
 
         return $validatorClass;
@@ -326,7 +332,7 @@ class Volan
     private function validateField(\Volan\Validator\AbstractValidator $validator, $nodeData = null)
     {
         if ($validator->isValid($nodeData) === false):
-            throw new \Exception("Sorry {$this->currentNode} element has invalid associated data", self::ERROR_NODE_IS_NOT_VALID);
+            throw new \Exception("{$this->currentNode} element has invalid associated data", self::ERROR_NODE_IS_NOT_VALID);
         endif;
     }
 
