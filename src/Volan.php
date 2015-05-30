@@ -208,7 +208,7 @@ class Volan
 
         if (!empty($nodeData) && is_array($nodeData)):
             $schemaKeys     = $nodeSchema->getArrayKeys();
-            $dataKeys       = array_keys($nodeData);
+            $dataKeys       = count(array_filter(array_keys($nodeData), 'is_string')) ? array_keys($nodeData) : [];
             $returnValue    = (bool) array_diff($dataKeys, $schemaKeys);
         endif;
 
