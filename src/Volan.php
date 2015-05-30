@@ -29,7 +29,7 @@ class Volan
     private $requiredMode = true;
 
     /**
-     * If set to false we not check wether field is required or not. Default is true
+     * If set to false allows excessive keys in array. Default is true
      * 
      * @var bool
      */
@@ -85,7 +85,7 @@ class Volan
         $this->logger = $logger;
     }
 
-    public function log($message)
+    private function log($message)
     {
         if (!is_null($this->logger)):
             $this->logger->info($message);
@@ -113,6 +113,7 @@ class Volan
     public function validate($arr)
     {
         $returnValue = true;
+        $this->currentNode = 'root';
 
         try {
 
@@ -120,7 +121,7 @@ class Volan
                 throw new \Exception('Sorry no root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
             endif;
             
-            if ($this->isChildElementHasStrictKeys(new CustomArrayObject($this->schema['root']), $arr)):
+            if ($this->strictMode && $this->isChildElementHasStrictKeys(new CustomArrayObject($this->schema['root']), $arr)):
                 throw new \Exception("Sorry root element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
             endif;
 
@@ -217,11 +218,11 @@ class Volan
      */
     private function validatingExcessiveKeys(\Volan\Validator\AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
     {
-        if (!$validator->isNested() && $this->strictMode && $this->isChildElementHasStrictKeys($schema, $nodeData)):
+        if ($this->strictMode && !$validator->isNested() && $this->isChildElementHasStrictKeys($schema, $nodeData)):
             throw new \Exception("Sorry {$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
         endif;
 
-        if ($validator->isNested() && $this->strictMode):
+        if ($this->strictMode && $validator->isNested()):
             foreach ($nodeData as $record):
                 if ($this->isChildElementHasStrictKeys($schema, $record)):
                     throw new \Exception("Sorry children of element: {$this->currentNode} has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
