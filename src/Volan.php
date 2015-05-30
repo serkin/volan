@@ -98,7 +98,11 @@ class Volan
      */
     private function setError($message, $code)
     {
-        $this->error = ['code' => $code, 'error' => $message];
+        $this->error = [
+            'code'  => $code,
+            'error' => $message,
+            'node'  => $this->currentNode
+                ];
     }
 
     /**
