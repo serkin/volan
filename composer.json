@@ -15,10 +15,9 @@
     ],
     "require": {
         "php": ">=5.5",
-        "psr/log": "1.0.0"
+        "monolog/monolog": "1.13.1"
     },
     "require-dev": {
-        "monolog/monolog": "1.13.1",
         "phpunit/phpunit": "4.6.*"
    },
 
