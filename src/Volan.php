@@ -6,21 +6,12 @@
         
 namespace Volan;
 
-use Psr\Log\LoggerInterface;
-
 class Volan
 {
-    /**
-     * @var array
-     */
-    private $error;
 
-    /**
-     * @var \Psr\Log\LoggerInterface
-     */
-    private $logger;
+    use \Volan\Traits\ErrorHandlerTrait;
+    use \Volan\Traits\LoggerTrait;
 
-    
     /**
      * If set to false all required fields set can be empty
      *
@@ -52,13 +43,6 @@ class Volan
     const ERROR_NODE_IS_NOT_VALID           = 6;
     const ERROR_NESTED_ELEMENT_NOT_VALID    = 7;
 
-    /**
-     * @return array
-     */
-    public function getErrorInfo()
-    {
-        return $this->error;
-    }
 
     /**
      * @param array $schema
@@ -83,33 +67,6 @@ class Volan
         $this->requiredMode = $mode;
     }
 
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    /**
-     * Gets current logger
-     * 
-     * @return \Psr\Log\LoggerInterface
-     */
-    private function getLogger()
-    {
-        return $this->logger;
-    }
-
-    /**
-     * @param string $message
-     * @param int    $code
-     */
-    private function setError($message, $code)
-    {
-        $this->error = [
-            'code'  => $code,
-            'error' => $message,
-            'node'  => $this->currentNode
-                ];
-    }
 
     /**
      * @param array $arr
