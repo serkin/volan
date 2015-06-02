@@ -25,7 +25,7 @@ abstract class AbstractValidator
     }
 
     /**
-     * 
+     *
      * @param mixed $nodeData
      *
      * @return bool
