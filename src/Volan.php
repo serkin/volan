@@ -3,7 +3,7 @@
 /*
  *  @author Serkin Akexander <serkin.alexander@gmail.com>
  */
-        
+
 namespace Volan;
 
 class Volan
@@ -21,7 +21,7 @@ class Volan
 
     /**
      * If set to false allows excessive keys in array. Default is true
-     * 
+     *
      * @var bool
      */
     private $strictMode;
@@ -56,10 +56,10 @@ class Volan
         $log = new DummyLogger('volan');
         $this->setLogger($log);
     }
-    
+
     /**
      * Sets required mode
-     * 
+     *
      * @param bool $mode
      */
     public function setRequiredMode($mode = true)
@@ -83,7 +83,7 @@ class Volan
             if (empty($this->schema['root'])):
                 throw new \Exception('No root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
             endif;
-            
+
             if ($this->strictMode && $this->isChildElementHasStrictKeys(new CustomArrayObject($this->schema['root']), $arr)):
                 throw new \Exception("root element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
             endif;
@@ -122,7 +122,7 @@ class Volan
             $validator = $this->getClassValidator($nodeSchema[$key]);
 
             $this->validateRequiredField($validator, $nodeData);
-            
+
             $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 
             if ($isRequired === false && empty($nodeData)):
@@ -133,8 +133,8 @@ class Volan
             $this->validatingExcessiveKeys($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
 
             $this->validateNesting($validator, $nodeData);
-            
-            $this->validateField($validator, $nodeData);            
+
+            $this->validateField($validator, $nodeData);
 
             if ($validator->isNested()) {
 
@@ -192,7 +192,7 @@ class Volan
             endforeach;
         endif;
     }
-    
+
     /**
      * @param \Volan\CustomArrayObject           $schema
      * @param mixed                              $nodeData
@@ -272,12 +272,12 @@ class Volan
         return $validatorClass;
 
     }
-    
+
     /*
      * Converts string constisting _ to PSR compatible class name
-     * 
+     *
      * @param string
-     * 
+     *
      * @return string
      */
     private function getPSRCompatibleClassName($string)
@@ -288,7 +288,7 @@ class Volan
         foreach ($arr as $key => $value):
             $className .= ucfirst(strtolower($value));
         endforeach;
-        
+
         return $className;
     }
 

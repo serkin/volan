@@ -14,7 +14,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->fixtureFileName = dirname(__DIR__) . '/fixture.php';
         parent::setUp();
     }
-    
+
     public function testSuccessfulValidation()
     {
         require $this->fixtureFileName;
@@ -28,7 +28,7 @@ class Volan extends PHPUnit_Framework_TestCase
     public function testErrorOnMissingRootNode()
     {
         require $this->fixtureFileName;
-        
+
         $schema = ['roooot' => []];
 
         $validator = new v($schema);
@@ -37,7 +37,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
         $this->assertEquals(v::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT, $validator->getErrorInfo()['code']);
         $this->assertEquals('root', $validator->getErrorInfo()['node']);
-        
+
     }
 
     public function testErrorOnMissingValidatorClaa()
@@ -55,7 +55,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals('root.price', $validator->getErrorInfo()['node']);
 
     }
-    
+
     public function testErrorOnMissingTypeField()
     {
         require $this->fixtureFileName;
@@ -83,9 +83,9 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals(v::ERROR_NODE_HAS_NO_FIELD_TYPE, $validator->getErrorInfo()['code']);
         $this->assertEquals('comments.comment', $validator->getErrorInfo()['node']);
     }
-    
-    
-    
+
+
+
     public function testErrorOnInvalidNode()
     {
         require $this->fixtureFileName;
@@ -99,7 +99,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals(v::ERROR_NODE_IS_NOT_VALID, $validator->getErrorInfo()['code']);
         $this->assertEquals('root.instock', $validator->getErrorInfo()['node']);
     }
-    
+
     public function testErrorOnInvalidNodeInDepth()
     {
         require $this->fixtureFileName;
@@ -113,7 +113,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals(v::ERROR_NODE_IS_NOT_VALID, $validator->getErrorInfo()['code']);
         $this->assertEquals('comments.userid', $validator->getErrorInfo()['node']);
     }
-    
+
     public function testErrorInNestedNode()
     {
         require $this->fixtureFileName;
@@ -141,7 +141,7 @@ class Volan extends PHPUnit_Framework_TestCase
         $this->assertEquals(v::ERROR_REQUIRED_FIELD_IS_EMPTY, $validator->getErrorInfo()['code']);
         $this->assertEquals('root.title', $validator->getErrorInfo()['node']);
     }
-    
+
     public function testErrorOnMissingRequiredFieldInDepth()
     {
         require $this->fixtureFileName;
@@ -197,7 +197,7 @@ class Volan extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
-    
+
     public function testSettingRequiredModeInDepth()
     {
         require $this->fixtureFileName;
@@ -217,7 +217,7 @@ class Volan extends PHPUnit_Framework_TestCase
         require $this->fixtureFileName;
 
         $arr['extrakey'] = []; // Let's corrupt data. Add excessive keys
-                
+
         $validator = new v($schema, false);
         $result = $validator->validate($arr);
 
@@ -230,10 +230,10 @@ class Volan extends PHPUnit_Framework_TestCase
 
         $arr['comments'][0]['extrakey'] = []; // Let's corrupt data. Add excessive keys
 
-        
+
         $validator = new v($schema, false);
         $result = $validator->validate($arr);
-        
+
         $this->assertTrue($result);
     }
 
@@ -250,9 +250,9 @@ class Volan extends PHPUnit_Framework_TestCase
         $validator = new v($schema);
         $validator->setLogger($log);
         $validator->validate($arr);
-        
+
         $this->assertTrue(filesize($filename) > 0);
-        
+
         @unlink($filename);
     }
 
