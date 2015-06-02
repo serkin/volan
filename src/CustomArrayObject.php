@@ -18,11 +18,11 @@ class CustomArrayObject extends \ArrayObject
     {
         $returnValue = [];
 
-        foreach (array_keys($this->getArrayCopy()) as $key):
-            if ($key != '_type'):
+        foreach (array_keys($this->getArrayCopy()) as $key) {
+            if ($key != '_type') {
                 $returnValue[] = $key;
-        endif;
-        endforeach;
+            }
+        }
 
         return $returnValue;
     }
