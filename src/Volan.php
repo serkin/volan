@@ -186,9 +186,7 @@ class Volan
 
         if (!$validator->isNested()):
             $this->validatingChildExcessiveKeys($schema, $nodeData);
-        endif;
-
-        if ($validator->isNested()):
+        else:
             foreach ($nodeData as $record):
                 $this->validatingChildExcessiveKeys($schema, $record);
             endforeach;
