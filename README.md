@@ -1,5 +1,6 @@
 # Light PHP validation library
-Validates arrays against given schema.
+For everyone who uses MongoDB or other NoSQL solution and cares about what client sends to his/her database and looking for validation library written in PHP. 
+`Volan` validates array against given shema and provides you with full information about invalid nodes. Can be used with logging so you can see the whole validation process.
 
 [![Build Status](https://img.shields.io/travis/serkin/volan.svg?style=flat-square)](https://travis-ci.org/serkin/parser)
 [![Coverage Status](https://img.shields.io/coveralls/serkin/volan/master.svg?style=flat-square)](https://coveralls.io/r/serkin/volan?branch=master)
@@ -8,6 +9,7 @@ Validates arrays against given schema.
 [![Total Downloads](https://poser.pugx.org/serkin/volan/downloads)](https://packagist.org/packages/serkin/volan)
 [![Latest Unstable Version](https://poser.pugx.org/serkin/volan/v/unstable)](https://packagist.org/packages/serkin/volan)
 [![License](https://poser.pugx.org/serkin/volan/license)](https://packagist.org/packages/serkin/volan)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/c15e651a-4e91-44b3-8b8f-393a0a4ac70b/small.png)](https://insight.sensiolabs.com/projects/c15e651a-4e91-44b3-8b8f-393a0a4ac70b)
 
 - [Volan](#light-php-validation-library)
 	- [Installation](#installation)
