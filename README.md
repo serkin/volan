@@ -18,6 +18,10 @@ For everyone who uses MongoDB or other NoSQL solution and cares about what clien
 	- [Custom validators](#custom-validators)
 	- [Usage with other libraries](#usage-with-other-libraries)
 	- [Tips](#tips)
+	    - [Allow extra keys in data](#allow-extra-keys-in-data)
+	    - [Allow required fields be omitted](#allow-required-fields-be-omitted)
+	    - [Logging](#logging)
+	    - [PSR compatible class names](#psr-compatible-class-names)	    
 	- [Dependencies](#dependencies)
 	- [Contribution](#contribution)
 	- [Licence](#licence)
@@ -37,6 +41,7 @@ All you have to do is to specify `_type` field for each node. `_type` is a refer
 
 ```php
 include 'vendor/autoload.php';
+
 $schema = [
     'root' => [ // Schema must begins with 'root'
         'title' => [
@@ -144,7 +149,7 @@ If you want to use other validation libraries with `Volan` it is easy. Let's tak
 namespace Volan\Validator;
 use Respect\Validation\Validator as v;
 
-class int_between_10_and_20 extends AbstractValidator
+class int_between_10_and_20_validator extends AbstractValidator
 {
     public function isValid($nodeData)
     {
@@ -154,11 +159,13 @@ class int_between_10_and_20 extends AbstractValidator
 ```
 
 ## Tips
+### Allow extra keys in data
 If you want allow extra keys in array you can define it in constructor
 ``` php
 $validator = new \Volan\Volan($schema, $strictMode = false);
 ```
 
+### Allow `required` fields be omitted
 In mongoDB when you update just several fields in collection you cannot pass validation cause required fields may be missing.
 You can tell validator consider all required validation as optional.
 
@@ -167,7 +174,7 @@ $validator = new \Volan\Volan($schema);
 $validator->setRequiredMode(false);
 $result = $validator->validate($book);
 ```
-
+### Logging
 If you want see validation process set logger
 ``` php
 use Monolog\Logger;
@@ -180,11 +187,15 @@ $validator = new \Volan\Volan($schema);
 $validator->setLogger($log);
 
 $result = $validator->validate($book);
-``` 
+```
+
+### PSR compatible class names
+
 You can use PSR compatible names for validation classes.
 Previous example with `mongoid` validation class can be rewritten like:
 ``` php
 namespace Volan\Validator;
+
 class MongoidValidator extends AbstractValidator
 {
     public function isValid($nodeData)
@@ -193,7 +204,7 @@ class MongoidValidator extends AbstractValidator
     }
 ```
 Here we changed `mongoid_validator` to `MongoidValidator`.
-Example with `int_between_10_and_20` be rewritten to `IntBetween10And20`
+Example with `int_between_10_and_20_validator` be rewritten to `IntBetween10And20Validator`
 
 ## Dependencies
 * PHP: >= 5.5
