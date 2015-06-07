@@ -11,7 +11,8 @@ class Volan extends PHPUnit_Framework_TestCase
     public $fixtureFileName;
 
     public function setUp() {
-        $this->fixtureFileName = dirname(__DIR__) . '/fixture.php';
+        $this->fixtureFileName = dirname(__DIR__) . '/fixtures/fixture.php';
+        require_once dirname(__DIR__) . '/fixtures/array_of_strings_validator.php';
         parent::setUp();
     }
 
