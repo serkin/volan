@@ -99,6 +99,11 @@ class Volan
         return $returnValue;
     }
 
+    public function getCurrentNode()
+    {
+        return $this->currentNode;
+    }
+
     /**
      * @param string                   $node
      * @param CustomArrayObject $schema
@@ -129,7 +134,7 @@ class Volan
                 continue;
 
             } else {
-                $this->validateRequiredFieldIsPresent($validator, $nodeData);
+                $this->validateRequiredFieldIsPresent($nodeData);
             }
 
             $this->validateExcessiveKeys($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
@@ -228,7 +233,7 @@ class Volan
      *
      * @throws \Exception
      */
-    private function validateRequiredFieldIsPresent(AbstractValidator $validator, $nodeData = null)
+    private function validateRequiredFieldIsPresent($nodeData = null)
     {
 
         if(empty($nodeData)):
@@ -254,9 +259,6 @@ class Volan
         $classNames = [];
         $classNames[] = $classStringNamespace . $classStringName;
         $classNames[] = $classStringNamespace . $this->getPSRCompatibleClassName($classStringName);
-
-        $validatorClass = null;
-
 
         if (class_exists($classNames[0])) {
             $validatorClass = new $classNames[0]();
