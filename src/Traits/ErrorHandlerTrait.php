@@ -14,7 +14,6 @@ trait ErrorHandlerTrait
      */
     private $error;
 
-
     /**
      * @return array
      */
@@ -33,7 +32,7 @@ trait ErrorHandlerTrait
         $this->error = [
             'code'  => $code,
             'error' => $message,
-            'node'  => $this->currentNode
+            'node'  => $this->getCurrentNode()
                 ];
     }
 }
