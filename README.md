@@ -21,7 +21,8 @@ For everyone who uses MongoDB or other NoSQL solution and cares about what clien
 	    - [Allow extra keys in data](#allow-extra-keys-in-data)
 	    - [Allow required fields be omitted](#allow-required-fields-be-omitted)
 	    - [Logging](#logging)
-	    - [PSR compatible class names](#psr-compatible-class-names)	    
+	    - [PSR compatible class names](#psr-compatible-class-names)
+	    - [Relational structure](#relational-structure)
 	- [Dependencies](#dependencies)
 	- [Contribution](#contribution)
 	- [Licence](#licence)
@@ -133,6 +134,7 @@ class mongoid_validator extends AbstractValidator
     {
         return ($nodeData instanceof \MongoId);
     }
+}
 ```
 * Add autoload to composer.json
 ``` json
@@ -156,6 +158,7 @@ class int_between_10_and_20_validator extends AbstractValidator
         return v::int()->between(10, 20)->validate($nodeData);
         
     }
+}
 ```
 
 ## Tips
@@ -202,9 +205,51 @@ class MongoidValidator extends AbstractValidator
     {
         return ($nodeData instanceof \MongoId);
     }
+}
 ```
 Here we changed `mongoid_validator` to `MongoidValidator`.
 Example with `int_between_10_and_20_validator` be rewritten to `IntBetween10And20Validator`
+
+### Relational structure
+Let's imagine we have field in our book data
+``` php
+...
+'categories' => [new \MongoId('111111111111111111111111'),new \MongoId('111111111111111111111112')]
+...
+```
+and we want ensure that all elements not only instances of `MongoId` but actually present in our database.
+It is easy. Our validator will be look like:
+namespace Volan\Validator;
+``` php
+class ArrayOfMongoids extends AbstractValidator
+{
+    public function isValid($nodeData)
+    {
+        foreach($nodeData as $id) {
+            if($id !instanceof \MongoId) || $this->presentInCategoryCollection($id))
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public function presentInCategoryCollection($id)
+    {
+        // Getting connection and so on
+
+        $collection = $db->selectCollection('categories');
+        return (bool)$collection->findOne(['_id' => $id]);
+    }
+    
+}
+```
+now in schema we add 
+``` php
+...
+'categories' => ['_type' => 'array_of_mongoids']
+...
+```
 
 ## Dependencies
 * PHP: >= 5.5
