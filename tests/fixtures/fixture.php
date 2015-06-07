@@ -6,9 +6,9 @@ $schema = [
         'title' => [
             '_type' => 'required_string'
             ],
-        'author' => [
-            '_type' => 'required_string'
-            ],
+        'characters' => [
+            '_type' => 'array_of_strings'
+        ],
         'price' => [
             '_type' => 'number'
             ],
@@ -21,7 +21,7 @@ $schema = [
         'reserved' => [
             '_type' => 'boolean'
             ],
-        'protagonist' => [
+        'author' => [
             '_type' => 'required_array',
             'name' => [
                 '_type' => 'required_string'
@@ -45,11 +45,11 @@ $schema = [
 $arr = [
     'title'     => 'The Idiot',
     'instock'   => true,
-    'author'    => 'Leo Tolstoy',
     'reserved'  => false,
     'price'     => 60,
-    'protagonist' => ['name' => 'Lev Nikolayevich Myshkin'],
-    'tags'      => ['novel', 'Fyodor Dostoyevsky'],
+    'characters' => ['Lev Nikolayevich Myshkin'],
+    'author' => ['name' => 'Fyodor Dostoyevsky'],
+    'tags'      => ['novel', 'russia'],
     'comments'  => [
         [
             'comment'   => 'Good book',
