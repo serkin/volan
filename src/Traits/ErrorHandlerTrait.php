@@ -22,6 +22,8 @@ trait ErrorHandlerTrait
         return $this->error;
     }
 
+    abstract function getCurrentNode();
+
 
     /**
      * @param string $message
