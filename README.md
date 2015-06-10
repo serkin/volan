@@ -226,7 +226,7 @@ class ArrayOfMongoids extends AbstractValidator
     public function isValid($nodeData)
     {
         foreach($nodeData as $id) {
-            if($id !instanceof \MongoId) || $this->presentInCategoryCollection($id))
+            if($id !instanceof \MongoId) || !$this->presentInCategoryCollection($id))
                 return false;
             }
         }
