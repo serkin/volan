@@ -117,7 +117,7 @@ class Volan
 
         foreach ($nodeSchema->getArrayKeys() as $key):
 
-            $this->currentNode = $node . '.' . $key;
+            $this->currentNode = $node.'.'.$key;
             $this->getLogger()->info("We are in element: {$this->currentNode}");
 
             $nodeData = isset($element[$key]) ? $element[$key] : null;
@@ -132,10 +132,9 @@ class Volan
             if ($isRequired === false && empty($nodeData)) {
                 $this->getLogger()->info("Element: {$this->currentNode} has empty nonrequired data. We skip other check");
                 continue;
-
-            } else {
-                $this->validateRequiredFieldIsPresent($nodeData);
             }
+
+            $this->validateRequiredFieldIsPresent($nodeData);
 
             $this->validateExcessiveKeys($validator, new CustomArrayObject($nodeSchema[$key]), $nodeData);
 
@@ -173,7 +172,7 @@ class Volan
         if (!empty($nodeData) && is_array($nodeData)):
             $schemaKeys     = $nodeSchema->getArrayKeys();
             $dataKeys       = count(array_filter(array_keys($nodeData), 'is_string')) ? array_keys($nodeData) : [];
-            $returnValue    = (bool)array_diff($dataKeys, $schemaKeys);
+            $returnValue    = (bool) array_diff($dataKeys, $schemaKeys);
         endif;
 
         return $returnValue;
@@ -228,15 +227,15 @@ class Volan
     }
 
     /**
-     * @param AbstractValidator $validator
-     * @param mixed                              $nodeData
+
+     * @param mixed $nodeData
      *
      * @throws \Exception
      */
     private function validateRequiredFieldIsPresent($nodeData = null)
     {
 
-        if(empty($nodeData)):
+        if (empty($nodeData)):
             throw new \Exception("{$this->currentNode} element has flag *required*", self::ERROR_REQUIRED_FIELD_IS_EMPTY);
         endif;
 
@@ -253,12 +252,12 @@ class Volan
     private function getClassValidator($node)
     {
 
-        $classStringName = $node['_type'] . '_validator';
+        $classStringName = $node['_type'].'_validator';
         $classStringNamespace = '\Volan\Validator\\';
 
         $classNames = [];
-        $classNames[] = $classStringNamespace . $classStringName;
-        $classNames[] = $classStringNamespace . $this->getPSRCompatibleClassName($classStringName);
+        $classNames[] = $classStringNamespace.$classStringName;
+        $classNames[] = $classStringNamespace.$this->getPSRCompatibleClassName($classStringName);
 
         if (class_exists($classNames[0])) {
             $validatorClass = new $classNames[0]();
@@ -268,7 +267,7 @@ class Volan
             throw new \Exception("Class validator {$classNames[0]}/{$classNames[1]} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
         }
 
-        $this->getLogger()->info("Class validator " . get_class($validatorClass) . " exists");
+        $this->getLogger()->info("Class validator ".get_class($validatorClass)." exists");
 
         return $validatorClass;
 
