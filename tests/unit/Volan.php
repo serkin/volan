@@ -257,4 +257,19 @@ class Volan extends PHPUnit_Framework_TestCase
         @unlink($filename);
     }
 
+    public function testGetErrorDescriptionFromValidator()
+    {
+
+        require $this->fixtureFileName;
+
+        $arr['characters'] = 'Sctring'; // Let's corrupt data. Value has to be array of string
+
+        $validator = new v($schema);
+        $result = $validator->validate($arr);
+
+        $this->assertFalse($result);
+        $this->assertEquals(1, preg_match('/Value supposed to be an array/', $validator->getErrorInfo()['error']));
+
+    }
+
 }

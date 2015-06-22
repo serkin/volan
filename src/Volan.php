@@ -316,7 +316,13 @@ class Volan
     private function validateNodeValue(AbstractValidator $validator, $nodeData = null)
     {
         if ($validator->isValid($nodeData) === false):
-            throw new \Exception("{$this->currentNode} element has invalid associated data", self::ERROR_NODE_IS_NOT_VALID);
+
+            $error = $this->currentNode . " element has invalid associated data.";
+            $error .= !is_null($validator->getErrorDescription())
+                ? $validator->getErrorDescription()
+                : '';
+
+            throw new \Exception($error, self::ERROR_NODE_IS_NOT_VALID);
         endif;
     }
 
