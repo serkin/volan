@@ -8,6 +8,12 @@ namespace Volan\Validator;
 
 abstract class AbstractValidator
 {
+
+    /**
+     * @var string Last Error description
+     */
+    protected $errorDescription = null;
+
     /**
      * @return bool
      */
@@ -23,6 +29,29 @@ abstract class AbstractValidator
     {
         return false;
     }
+
+    /**
+     * Gets error description
+     *
+     * @return mixed
+     */
+    public function getErrorDescription()
+    {
+        return $this->errorDescription;
+    }
+
+
+    /**
+     * Sets error description
+     *
+     * @param string $error
+     *
+     */
+    public function setErrorDescription($error)
+    {
+        $this->errorDescription = $error;
+    }
+
 
     /**
      *
