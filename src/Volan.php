@@ -29,6 +29,11 @@ class Volan
     private $strictMode;
 
     /**
+     * @var array
+     */
+    protected $params = [];
+
+    /**
      * @var string
      */
     private $currentNode = '';
@@ -67,6 +72,17 @@ class Volan
     public function setRequiredMode($mode = true)
     {
         $this->requiredMode = $mode;
+    }
+
+    /**
+     * Sets custom params
+     *
+     * @param array $arr
+     * @return void
+     *
+     */
+    public function setParams($arr = []) {
+        $this->params = $arr;
     }
 
 
@@ -126,6 +142,7 @@ class Volan
             $this->validateTypeFieldIsPresent($nodeSchema[$key]);
 
             $validator = $this->getClassValidator($nodeSchema[$key]);
+            $validator->setParams($this->params);
 
             $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 

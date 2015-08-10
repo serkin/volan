@@ -15,6 +15,11 @@ abstract class AbstractValidator
     protected $errorDescription = null;
 
     /**
+     * @var array $params
+     */
+    protected $params = [];
+
+    /**
      * @return bool
      */
     public function isRequired()
@@ -50,6 +55,19 @@ abstract class AbstractValidator
     public function setErrorDescription($error)
     {
         $this->errorDescription = $error;
+    }
+
+    /*
+     * Sets custom params
+     *
+     * @param array $arr
+     *
+     * @return void
+     */
+    public function setParams($arr = []) {
+        foreach($arr  as $key => $value) {
+            $this->params[$key] = $value;
+        }
     }
 
 
