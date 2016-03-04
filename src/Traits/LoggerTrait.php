@@ -7,6 +7,7 @@
 namespace Volan\Traits;
 
 use Psr\Log\LoggerInterface;
+use Volan\InMemoryLogger;
 
 trait LoggerTrait
 {
@@ -28,7 +29,7 @@ trait LoggerTrait
     /**
      * Gets current logger
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return InMemoryLogger
      */
     private function getLogger()
     {
