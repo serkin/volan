@@ -180,16 +180,13 @@ $result = $validator->validate($book);
 ### Logging
 If you want see validation process set logger
 ``` php
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
-$log = new Logger('name');
-$log->pushHandler(new StreamHandler('path/to/your.log'));
 
 $validator = new \Volan\Volan($schema);
-$validator->setLogger($log);
 
 $result = $validator->validate($book);
+$result->getLog();
+
 ```
 
 ### PSR compatible class names
@@ -261,6 +258,15 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 ## Tests
-``` bash
-phpunit
-```
+
+    phpunit
+
+
+Or with Docker
+
+    docker run --rm -v "$PWD":/var/src/ serkin/php7 vendor/bin/phpunit --debug
+
+
+Code style
+
+    docker run --rm -v "$PWD":/var/src/ serkin/php7 vendor/bin/php-cs-fixer fix src
