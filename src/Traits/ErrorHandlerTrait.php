@@ -22,7 +22,7 @@ trait ErrorHandlerTrait
         return $this->error;
     }
 
-    abstract function getCurrentNode();
+    abstract public function getCurrentNode();
 
 
     /**

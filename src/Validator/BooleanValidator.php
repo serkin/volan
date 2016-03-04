@@ -15,7 +15,6 @@ class BooleanValidator extends AbstractValidator
      */
     public function isValid($nodeData)
     {
-
         return is_bool($nodeData);
     }
 }

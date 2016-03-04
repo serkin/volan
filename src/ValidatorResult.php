@@ -2,8 +2,8 @@
 
 namespace Volan;
 
-
-class ValidatorResult {
+class ValidatorResult
+{
 
     const ERROR_NODE_HAS_EXCESSIVE_KEYS     = 1;
     const ERROR_NODE_HAS_NO_FIELD_TYPE      = 2;
@@ -56,7 +56,7 @@ class ValidatorResult {
      * @param int    $code
      * @param string $message
      */
-    public function setError($code, $node,  $message = '')
+    public function setError($code, $node, $message = '')
     {
         $this->errorCode = $code;
         $this->errorNode = $node;
@@ -112,7 +112,8 @@ class ValidatorResult {
     /**
      * @return bool
      */
-    public function isValid() {
+    public function isValid()
+    {
         return $this->errorCode === null;
     }
 }

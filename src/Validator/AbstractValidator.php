@@ -64,8 +64,9 @@ abstract class AbstractValidator
      *
      * @return void
      */
-    public function setParams($arr = []) {
-        foreach($arr  as $key => $value) {
+    public function setParams($arr = [])
+    {
+        foreach ($arr  as $key => $value) {
             $this->params[$key] = $value;
         }
     }

@@ -17,7 +17,6 @@ class StringValidator extends AbstractValidator
      */
     public function isValid($nodeData)
     {
-
         return (!empty($nodeData) && is_string($nodeData));
     }
 }

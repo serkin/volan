@@ -11,7 +11,6 @@ use Exception;
 use Volan\Traits\LoggerTrait;
 use Volan\Traits\ErrorHandlerTrait;
 
-
 class Volan
 {
 
@@ -77,7 +76,8 @@ class Volan
      * @return void
      *
      */
-    public function setParams($arr = []) {
+    public function setParams($arr = [])
+    {
         $this->params = $arr;
     }
 
@@ -93,16 +93,14 @@ class Volan
         $this->currentNode = 'root';
 
         try {
-
             $this->validateSchemaBeginsWithRootKey(new CustomArrayObject($this->schema));
 
-            if ($this->strictMode)
+            if ($this->strictMode) {
                 $this->validateExcessiveKeysAbsent(new CustomArrayObject($this->schema['root']), $arr);
+            }
 
             $this->validateNode('root', new CustomArrayObject($this->schema), $arr);
-
         } catch (Exception $exc) {
-
             $this->getLogger()->error($exc->getMessage());
 
             $returnValue->setError($exc->getCode(), $this->getCurrentNode(), $exc->getMessage());
@@ -129,7 +127,6 @@ class Volan
         $nodeSchema = new CustomArrayObject($schema[$node]);
 
         foreach ($nodeSchema->getArrayKeys() as $key) {
-
             $this->currentNode = $node . '.' . $key;
             $this->getLogger()->info("We are in element: {$this->currentNode}");
 
@@ -157,19 +154,16 @@ class Volan
             $this->validateNesting($validator, $nodeData);
 
             if ($validator->isNested()) {
-
                 $this->getLogger()->info("Element: {$this->currentNode} has children");
 
                 foreach ($nodeData as $record) {
                     $this->validateNode($key, $nodeSchema, $record);
                 }
-
             } else {
                 $this->validateNode($key, $nodeSchema, $nodeData);
             }
 
             $this->getLogger()->info("Element: {$this->currentNode} finished checking successfully.");
-
         }
     }
 
@@ -248,7 +242,6 @@ class Volan
      */
     private function validateRequiredFieldIsPresent($nodeData = null)
     {
-
         if (empty($nodeData)) {
             throw new Exception("{$this->currentNode} element has flag *required*", ValidatorResult::ERROR_REQUIRED_FIELD_IS_EMPTY);
         }
@@ -265,7 +258,6 @@ class Volan
      */
     private function getClassValidator($node)
     {
-
         $classStringName = $node['_type'].'_validator';
         $classStringNamespace = '\Volan\Validator\\';
 
@@ -284,7 +276,6 @@ class Volan
         $this->getLogger()->info("Class validator ".get_class($validatorClass)." exists");
 
         return $validatorClass;
-
     }
 
     /**
@@ -330,7 +321,6 @@ class Volan
     private function validateNodeValue(AbstractValidator $validator, $nodeData = null)
     {
         if ($validator->isValid($nodeData) === false) {
-
             $error = $this->currentNode . " element has invalid associated data.";
             $error .= !is_null($validator->getErrorDescription())
                 ? $validator->getErrorDescription()

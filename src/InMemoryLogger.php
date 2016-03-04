@@ -14,20 +14,20 @@ class InMemoryLogger implements LoggerInterface
 
     public function __construct()
     {
-
         $filename = "php://memory";
 
         $fp = fopen($filename, "w+b");
 
         $this->stream = $fp;
-
     }
 
-    public function info($message, array $context = array()) {
+    public function info($message, array $context = array())
+    {
         fwrite($this->stream, (string)$message . "\n");
     }
 
-    public function warning($message, array $context = array()) {
+    public function warning($message, array $context = array())
+    {
         $this->info('WARNING: ' . $message, $context);
     }
 
@@ -71,13 +71,12 @@ class InMemoryLogger implements LoggerInterface
      *
      * @return string
      */
-    public function getLog() {
-
+    public function getLog()
+    {
         rewind($this->stream);
 
         return stream_get_contents($this->stream);
     }
-
 }
 
 
