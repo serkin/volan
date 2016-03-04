@@ -6,13 +6,17 @@
 
 namespace Volan;
 
-use \Volan\Validator\AbstractValidator;
+use Volan\Validator\AbstractValidator;
+use Exception;
+use Volan\Traits\LoggerTrait;
+use Volan\Traits\ErrorHandlerTrait;
+
 
 class Volan
 {
 
-    use \Volan\Traits\ErrorHandlerTrait;
-    use \Volan\Traits\LoggerTrait;
+    use ErrorHandlerTrait;
+    use LoggerTrait;
 
     /**
      * If set to false all required fields set can be empty
@@ -42,14 +46,6 @@ class Volan
      */
     private $schema = [];
 
-    const ERROR_NODE_HAS_EXCESSIVE_KEYS     = 1;
-    const ERROR_NODE_HAS_NO_FIELD_TYPE      = 2;
-    const ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT  = 3;
-    const ERROR_VALIDATOR_CLASS_NOT_FOUND   = 4;
-    const ERROR_REQUIRED_FIELD_IS_EMPTY     = 5;
-    const ERROR_NODE_IS_NOT_VALID           = 6;
-    const ERROR_NESTED_ELEMENT_NOT_VALID    = 7;
-
 
     /**
      * @param array $schema
@@ -60,7 +56,7 @@ class Volan
         $this->schema       = $schema;
         $this->strictMode   = $strictMode;
 
-        $log = new DummyLogger('volan');
+        $log = new InMemoryLogger();
         $this->setLogger($log);
     }
 
@@ -89,11 +85,11 @@ class Volan
     /**
      * @param array $arr
      *
-     * @return bool
+     * @return ValidatorResult
      */
     public function validate($arr)
     {
-        $returnValue = true;
+        $returnValue = new ValidatorResult();
         $this->currentNode = 'root';
 
         try {
@@ -105,11 +101,12 @@ class Volan
 
             $this->validateNode('root', new CustomArrayObject($this->schema), $arr);
 
-        } catch (\Exception $exc) {
-            $this->setError($exc->getMessage(), $exc->getCode());
-            $this->getLogger()->warning($exc->getMessage());
+        } catch (Exception $exc) {
 
-            $returnValue = false;
+            $this->getLogger()->error($exc->getMessage());
+
+            $returnValue->setError($exc->getCode(), $this->getCurrentNode(), $exc->getMessage());
+            $returnValue->setLog($this->getLogger()->getLog());
         }
 
         return $returnValue;
@@ -121,19 +118,19 @@ class Volan
     }
 
     /**
-     * @param string                   $node
+     * @param string            $node
      * @param CustomArrayObject $schema
-     * @param mixed                    $element
+     * @param mixed             $element
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateNode($node, CustomArrayObject $schema, $element = [])
     {
         $nodeSchema = new CustomArrayObject($schema[$node]);
 
-        foreach ($nodeSchema->getArrayKeys() as $key):
+        foreach ($nodeSchema->getArrayKeys() as $key) {
 
-            $this->currentNode = $node.'.'.$key;
+            $this->currentNode = $node . '.' . $key;
             $this->getLogger()->info("We are in element: {$this->currentNode}");
 
             $nodeData = isset($element[$key]) ? $element[$key] : null;
@@ -147,7 +144,7 @@ class Volan
             $isRequired = $this->requiredMode ? $validator->isRequired() : false;
 
             if ($isRequired === false && empty($nodeData)) {
-                $this->getLogger()->info("Element: {$this->currentNode} has empty nonrequired data. We skip other check");
+                $this->getLogger()->info("Element: {$this->currentNode} has empty non-required data. We skip other check");
                 continue;
             }
 
@@ -163,9 +160,9 @@ class Volan
 
                 $this->getLogger()->info("Element: {$this->currentNode} has children");
 
-                foreach ($nodeData as $record):
+                foreach ($nodeData as $record) {
                     $this->validateNode($key, $nodeSchema, $record);
-                endforeach;
+                }
 
             } else {
                 $this->validateNode($key, $nodeSchema, $nodeData);
@@ -173,12 +170,12 @@ class Volan
 
             $this->getLogger()->info("Element: {$this->currentNode} finished checking successfully.");
 
-        endforeach;
+        }
     }
 
     /**
      * @param CustomArrayObject $nodeSchema
-     * @param array                    $nodeData
+     * @param array             $nodeData
      *
      * @return bool
      */
@@ -186,59 +183,59 @@ class Volan
     {
         $returnValue = false;
 
-        if (!empty($nodeData) && is_array($nodeData)):
-            $schemaKeys     = $nodeSchema->getArrayKeys();
-            $dataKeys       = count(array_filter(array_keys($nodeData), 'is_string')) ? array_keys($nodeData) : [];
-            $returnValue    = (bool) array_diff($dataKeys, $schemaKeys);
-        endif;
+        if (!empty($nodeData) && is_array($nodeData)) {
+            $schemaKeys = $nodeSchema->getArrayKeys();
+            $dataKeys = count(array_filter(array_keys($nodeData), 'is_string')) ? array_keys($nodeData) : [];
+            $returnValue = (bool)array_diff($dataKeys, $schemaKeys);
+        }
 
         return $returnValue;
     }
 
     /**
      * @param AbstractValidator $validator
-     * @param CustomArrayObject           $schema
-     * @param mixed                              $nodeData
+     * @param CustomArrayObject $schema
+     * @param mixed             $nodeData
      *
      */
     private function validateExcessiveKeys(AbstractValidator $validator, CustomArrayObject $schema, $nodeData = null)
     {
-        if ($this->strictMode === false):
+        if ($this->strictMode === false) {
             return;
-        endif;
+        }
 
-        if (!$validator->isNested()):
+        if (!$validator->isNested()) {
             $this->validateExcessiveKeysAbsent($schema, $nodeData);
-        else:
-            foreach ($nodeData as $record):
+        } else {
+            foreach ($nodeData as $record) {
                 $this->validateExcessiveKeysAbsent($schema, $record);
-            endforeach;
-        endif;
+            }
+        }
     }
 
     /**
      * @param CustomArrayObject           $schema
      * @param mixed                              $nodeData
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateExcessiveKeysAbsent($schema, $nodeData)
     {
-        if ($this->isChildElementHasStrictKeys($schema, $nodeData)):
-            throw new \Exception("{$this->currentNode} element has excessive keys", self::ERROR_NODE_HAS_EXCESSIVE_KEYS);
-        endif;
+        if ($this->isChildElementHasStrictKeys($schema, $nodeData)) {
+            throw new Exception("{$this->currentNode} element has excessive keys", ValidatorResult::ERROR_NODE_HAS_EXCESSIVE_KEYS);
+        }
     }
 
     /**
      * @param array $node
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateTypeFieldIsPresent($node)
     {
-        if (empty($node['_type'])):
-            throw new \Exception("Element: {$this->currentNode} has no compulsory field: _type", self::ERROR_NODE_HAS_NO_FIELD_TYPE);
-        endif;
+        if (empty($node['_type'])) {
+            throw new Exception("Element: {$this->currentNode} has no compulsory field: _type", ValidatorResult::ERROR_NODE_HAS_NO_FIELD_TYPE);
+        }
 
         $this->getLogger()->info("Element: {$this->currentNode} has field: _type");
     }
@@ -247,14 +244,14 @@ class Volan
 
      * @param mixed $nodeData
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateRequiredFieldIsPresent($nodeData = null)
     {
 
-        if (empty($nodeData)):
-            throw new \Exception("{$this->currentNode} element has flag *required*", self::ERROR_REQUIRED_FIELD_IS_EMPTY);
-        endif;
+        if (empty($nodeData)) {
+            throw new Exception("{$this->currentNode} element has flag *required*", ValidatorResult::ERROR_REQUIRED_FIELD_IS_EMPTY);
+        }
 
         $this->getLogger()->info('*required* check passed');
     }
@@ -264,7 +261,7 @@ class Volan
      *
      * @return AbstractValidator
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function getClassValidator($node)
     {
@@ -281,7 +278,7 @@ class Volan
         } elseif (class_exists($classNames[1])) {
             $validatorClass = new $classNames[1]();
         } else {
-            throw new \Exception("Class validator {$classNames[0]}/{$classNames[1]} not found", self::ERROR_VALIDATOR_CLASS_NOT_FOUND);
+            throw new Exception("Class validator {$classNames[0]}/{$classNames[1]} not found", ValidatorResult::ERROR_VALIDATOR_CLASS_NOT_FOUND);
         }
 
         $this->getLogger()->info("Class validator ".get_class($validatorClass)." exists");
@@ -295,15 +292,15 @@ class Volan
      *
      * @param CustomArrayObject $schema
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
     private function validateSchemaBeginsWithRootKey(CustomArrayObject $schema)
     {
-        if (empty($schema['root'])):
-            throw new \Exception('No root element in schema', self::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
-        endif;
+        if (empty($schema['root'])) {
+            throw new Exception('No root element in schema', ValidatorResult::ERROR_SCHEMA_HAS_NO_ROOT_ELEMENT);
+        }
     }
     /*
      * Converts string constisting _ to PSR compatible class name
@@ -317,9 +314,9 @@ class Volan
         $className = '';
         $arr = explode('_', $string);
 
-        foreach ($arr as $key => $value):
+        foreach ($arr as $key => $value) {
             $className .= ucfirst(strtolower($value));
-        endforeach;
+        }
 
         return $className;
     }
@@ -328,31 +325,31 @@ class Volan
      * @param AbstractValidator $validator
      * @param mixed                              $nodeData
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateNodeValue(AbstractValidator $validator, $nodeData = null)
     {
-        if ($validator->isValid($nodeData) === false):
+        if ($validator->isValid($nodeData) === false) {
 
             $error = $this->currentNode . " element has invalid associated data.";
             $error .= !is_null($validator->getErrorDescription())
                 ? $validator->getErrorDescription()
                 : '';
 
-            throw new \Exception($error, self::ERROR_NODE_IS_NOT_VALID);
-        endif;
+            throw new Exception($error, ValidatorResult::ERROR_NODE_IS_NOT_VALID);
+        }
     }
 
     /**
      * @param AbstractValidator $validator
      * @param mixed                              $nodeData
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateNesting(AbstractValidator $validator, $nodeData)
     {
-        if ($validator->isNested() && (!isset($nodeData[0]) || !is_array($nodeData[0]))):
-            throw new \Exception("{$this->currentNode} element supposed to be nested but it is not", self::ERROR_NESTED_ELEMENT_NOT_VALID);
-        endif;
+        if ($validator->isNested() && (!isset($nodeData[0]) || !is_array($nodeData[0]))) {
+            throw new Exception("{$this->currentNode} element supposed to be nested but it is not", ValidatorResult::ERROR_NESTED_ELEMENT_NOT_VALID);
+        }
     }
 }
