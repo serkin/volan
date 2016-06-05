@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=7.0|>=5.3",
-        "monolog/monolog": "dev-master"
+        "monolog/monolog": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "dev-master",
