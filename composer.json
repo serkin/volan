@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
+        "php": ">=7.0|>=5.3",
         "monolog/monolog": "dev-master"
     },
     "require-dev": {
