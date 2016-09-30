@@ -128,7 +128,7 @@ If you need extra validators you can create them extending `\Volan\Validator\Abs
 * Add your custom validator `src/Volan/Validator/mongoid_validator.php`. Example for `mongoid` validator:
 ``` php
 namespace Volan\Validator;
-class mongoid_validator extends AbstractValidator
+class MongoidValidator extends AbstractValidator
 {
     public function isValid($nodeData)
     {
@@ -151,7 +151,7 @@ If you want to use other validation libraries with `Volan` it is easy. Let's tak
 namespace Volan\Validator;
 use Respect\Validation\Validator as v;
 
-class int_between_10_and_20_validator extends AbstractValidator
+class IntBetween10And20Validator extends AbstractValidator
 {
     public function isValid($nodeData)
     {
