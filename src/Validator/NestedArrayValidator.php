@@ -6,7 +6,7 @@
 
 namespace Volan\Validator;
 
-class NestedArrayValidator extends arrayValidator
+class NestedArrayValidator extends ArrayValidator
 {
     /**
      * @return bool
