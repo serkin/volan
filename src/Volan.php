@@ -242,7 +242,7 @@ class Volan
      */
     private function validateRequiredFieldIsPresent($nodeData = null)
     {
-        if (empty($nodeData)) {
+        if (is_null($nodeData)) {
             throw new Exception("{$this->currentNode} element has flag *required*", ValidatorResult::ERROR_REQUIRED_FIELD_IS_EMPTY);
         }
 
