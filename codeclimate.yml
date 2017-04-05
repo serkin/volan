@@ -1,5 +1,0 @@
-# Save as .codeclimate.yml (note leading .) in project root directory
-languages:
-  PHP: true
-exclude_paths:
- - "tests/*"

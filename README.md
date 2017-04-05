@@ -33,7 +33,7 @@ For everyone who uses MongoDB or other NoSQL solution and cares about what clien
 via Composer:
 
 ``` bash
-composer require serkin/volan ~1.1
+composer require serkin/volan dev-master
 ```
 
 ## Usage
@@ -249,7 +249,7 @@ now in schema we add
 ```
 
 ## Dependencies
-* PHP: >= 5.5
+* PHP: >= 5.4
 
 ## Contribution
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.

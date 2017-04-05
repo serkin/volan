@@ -14,12 +14,12 @@
         }
     ],
     "require": {
-        "php": ">=7.0|>=5.3",
+        "php": ">=7.0|>=5.4",
         "monolog/monolog": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "dev-master",
-        "friendsofphp/php-cs-fixer": "dev-master"
+        "phpunit/phpunit": "~4.8|~5.7",
+        "friendsofphp/php-cs-fixer": "*"
    },
 
     "autoload": {

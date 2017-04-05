@@ -1,17 +1,20 @@
-sudo: required
-
 language: php
 
-services:
-  - docker
+
+php:
+  - '5.4'
+  - '5.5'
+  - '5.6'
+  - '7.0'
+
 
 before_install:
-  - docker run --rm -v "$PWD":/var/src/ serkin/php7 composer install
-  - docker run --rm -v "$PWD":/var/src/ serkin/php7 composer require satooshi/php-coveralls:dev-master -n
+  - composer install
+  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]]; then composer require satooshi/php-coveralls:dev-master -n ; fi
 
 script:
-  - docker run --rm -v "$PWD":/var/src/ serkin/php7 vendor/bin/phpunit --debug
+  - vendor/bin/phpunit --debug
 
 
 after_script:
-  - docker run --rm -v "$PWD":/var/src/ serkin/php7 php vendor/bin/coveralls -v
+  - if [[ $TRAVIS_PHP_VERSION == "5.6" ]]; then vendor/bin/coveralls -v ; fi
