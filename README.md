@@ -101,7 +101,7 @@ $validator = new \Volan\Volan($schema);
 $result = $validator->validate($book);
 
 // if $result->isValid() === false you can get full information about invalid node
-var_dump($validator->getErrorInfo());
+var_dump($result->getErrorInfo());
 ```
 ## Predefined validators
 ### Strings
